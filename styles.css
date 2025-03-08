@@ -1,0 +1,622 @@
+:root {
+    --primary-color: #2c3e50;
+    --secondary-color: #34495e;
+    --accent-color: #3498db;
+    --card-width: 100px;
+    --card-height: 140px;
+    --card-red: #e74c3c;
+    --card-black: #2c3e50;
+    --card-back: #2980b9;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    background-size: 400% 400%;
+    animation: gradientBG 15s ease infinite;
+    gap: 16px;
+    padding-top: 30px;
+}
+
+@keyframes gradientBG {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.game-container {
+    --game-padding: 40px;
+    --card-gap: 20px;
+    padding: var(--game-padding);
+    width: calc((var(--card-width) + 4px) * 7 + var(--card-gap) * 6 + var(--game-padding) * 2);
+    height: 800px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    position: relative;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    box-shadow: 
+        0 20px 40px rgba(0, 0, 0, 0.2),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+    animation: fadeIn 0.5s ease-out;
+    margin-top: -8px;
+    box-sizing: border-box;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.restart-button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 24px;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(10px);
+    box-shadow: 
+        0 2px 8px rgba(0, 0, 0, 0.1),
+        0 0 0 1px rgba(255, 255, 255, 0.1);
+    z-index: 100;
+    outline: none;
+    -webkit-font-smoothing: antialiased;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    margin-bottom: 8px;
+}
+
+.restart-button:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: translateY(-1px) scale(1.02);
+    box-shadow: 
+        0 4px 12px rgba(0, 0, 0, 0.15),
+        0 0 0 2px rgba(255, 255, 255, 0.2),
+        0 0 20px rgba(var(--accent-color), 0.1);
+    color: rgba(255, 255, 255, 1);
+}
+
+.restart-button:active {
+    transform: translateY(1px) scale(0.98);
+    box-shadow: 
+        0 2px 4px rgba(0, 0, 0, 0.1),
+        0 0 0 1px rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.12);
+    transition-duration: 0.1s;
+}
+
+.restart-button svg {
+    width: 16px;
+    height: 16px;
+    opacity: 0.9;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.restart-button:hover:not(:disabled) svg {
+    transform: rotate(180deg);
+    opacity: 1;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.15));
+}
+
+.restart-button:active:not(:disabled) svg {
+    transform: rotate(180deg) scale(0.95);
+    transition-duration: 0.1s;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
+}
+
+@keyframes cardAppear {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) scale(0.8) translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(-50%);
+    }
+}
+
+.restart-button:hover svg {
+    animation: spin 1s ease-in-out;
+}
+
+.restart-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+    transform: none;
+    box-shadow: none;
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.1);
+    transition: none;
+}
+
+.top-section {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 40px;
+    position: relative;
+    z-index: 1;
+    padding: 0;
+    width: 100%;
+    box-sizing: border-box;
+    min-height: calc(var(--card-height) + 4px);
+}
+
+.top-section::after {
+    content: '';
+    position: absolute;
+    bottom: -20px;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, 
+        transparent 0%, 
+        rgba(255, 255, 255, 0.1) 20%, 
+        rgba(255, 255, 255, 0.1) 80%, 
+        transparent 100%);
+}
+
+.deck-area {
+    display: flex;
+    gap: var(--card-gap);
+    align-items: flex-start;
+    width: calc((var(--card-width) + 4px) * 2 + var(--card-gap));
+    justify-content: flex-start;
+    flex-shrink: 0;
+}
+
+.foundation-area {
+    display: flex;
+    gap: var(--card-gap);
+    align-items: flex-start;
+    width: calc((var(--card-width) + 4px) * 4 + var(--card-gap) * 3);
+    justify-content: flex-end;
+    flex-shrink: 0;
+}
+
+.tableau-area {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--card-gap);
+    width: 100%;
+    margin-top: var(--card-gap);
+    padding: 0;
+    position: relative;
+    z-index: 0;
+    box-sizing: border-box;
+    min-height: calc(var(--card-height) * 3);
+}
+
+.tableau-area::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at center, 
+        rgba(255, 255, 255, 0.05) 0%, 
+        transparent 70%);
+    pointer-events: none;
+    z-index: -1;
+}
+
+.card-stack {
+    width: calc(var(--card-width) + 4px);
+    height: calc(var(--card-height) + 4px);
+    border-radius: 8px;
+    border: 2px dashed rgba(255, 255, 255, 0.2);
+    position: relative;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    perspective: 1000px;
+    transform-style: preserve-3d;
+    isolation: isolate;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    padding: 0;
+    overflow: visible;
+    animation: stackAppear 0.3s ease-out;
+    flex-shrink: 0;
+}
+
+@keyframes stackAppear {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.card-stack:empty {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(5px);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+.card-stack:hover:empty {
+    border-color: rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.15),
+                0 0 20px rgba(255, 255, 255, 0.05);
+    transform: scale(1.02);
+}
+
+.card {
+    width: var(--card-width);
+    height: var(--card-height);
+    background: white;
+    border-radius: 8px;
+    position: absolute;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1),
+                0 4px 16px rgba(0, 0, 0, 0.05);
+    user-select: none;
+    font-family: 'SF Pro Display', -apple-system, sans-serif;
+    font-weight: 500;
+    backface-visibility: hidden;
+    transform-style: preserve-3d;
+    will-change: transform, opacity, box-shadow;
+    z-index: 1;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 0;
+    margin: 0;
+    box-sizing: border-box;
+    animation: cardAppear 0.3s ease-out;
+}
+
+.card.face-up {
+    z-index: 2;
+}
+
+.card:hover {
+    z-index: 3;
+}
+
+.card-content {
+    height: 100%;
+    padding: 12px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: linear-gradient(135deg, rgba(255,255,255,1) 0%, rgba(250,250,250,1) 100%);
+    border-radius: 8px;
+    border: 1px solid rgba(0,0,0,0.05);
+}
+
+.rank {
+    font-size: 1.2em;
+    line-height: 1;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.05);
+}
+
+.rank.top {
+    text-align: left;
+}
+
+.rank.bottom {
+    text-align: right;
+    transform: rotate(180deg);
+}
+
+.center-suit {
+    font-size: 2.5em;
+    text-align: center;
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.9;
+    text-shadow: 2px 2px 2px rgba(0,0,0,0.1);
+    transform: scale(1.1);
+}
+
+.card.face-down .card-back {
+    height: 100%;
+    width: 100%;
+    background: var(--card-back);
+    background-image: 
+        linear-gradient(45deg, 
+            rgba(255, 255, 255, 0.1) 25%, 
+            transparent 25%, 
+            transparent 50%, 
+            rgba(255, 255, 255, 0.1) 50%, 
+            rgba(255, 255, 255, 0.1) 75%, 
+            transparent 75%, 
+            transparent),
+        linear-gradient(to right bottom, rgba(255,255,255,0.2), transparent);
+    background-size: 10px 10px, 100% 100%;
+    border-radius: 8px;
+    box-shadow: 
+        inset 0 0 20px rgba(0, 0, 0, 0.2),
+        inset 0 0 5px rgba(255, 255, 255, 0.2),
+        0 4px 8px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255,255,255,0.1);
+    animation: shimmer 2s infinite linear;
+    transform: translateZ(1px);
+    pointer-events: none;
+}
+
+.card.face-down {
+    pointer-events: none;
+    cursor: default;
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: 0 0, 0 0;
+    }
+    100% {
+        background-position: 20px 20px, 0 0;
+    }
+}
+
+.card.face-up:hover {
+    transform: translateX(-50%) translateY(-5px) scale(1.02);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15),
+                0 12px 24px rgba(0, 0, 0, 0.1);
+    filter: brightness(1.02);
+}
+
+.card.face-up {
+    background: linear-gradient(135deg, #ffffff, #f8f9fa);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transform: translateZ(1px);
+}
+
+.card.face-up::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 8px;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.5);
+    pointer-events: none;
+}
+
+.card.face-up:hover {
+    background: linear-gradient(135deg, #ffffff, #f0f2f4);
+}
+
+.card.red {
+    color: var(--card-red);
+}
+
+.card.black {
+    color: var(--card-black);
+}
+
+.tableau .card {
+    margin-top: 30px;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.tableau .card-stack {
+    min-height: calc(var(--card-height) + 200px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    isolation: isolate;
+    box-sizing: border-box;
+    padding: 0;
+}
+
+.foundation .card-stack,
+.deck-area .card-stack {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    padding: 0;
+}
+
+.foundation .card,
+.deck-area .card {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0;
+}
+
+.tableau .card-stack::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    z-index: 0;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.tableau .card-stack .card {
+    position: absolute;
+    z-index: var(--z-index, 1);
+    --z-index: calc(var(--card-index, 0) + 1);
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 0;
+}
+
+.tableau .card-stack .card.face-up {
+    --z-index: calc(var(--card-index, 0) + 50);
+}
+
+.tableau .card-stack .card:hover {
+    --z-index: calc(var(--card-index, 0) + 100);
+}
+
+.tableau .card.face-up:hover {
+    transform: translate(-50%, -10px) scale(1.02);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15),
+                0 12px 24px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+.foundation .card:hover,
+.deck-area .card:hover {
+    transform: translate(-50%, -50%) scale(1.02);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15),
+                0 12px 24px rgba(0, 0, 0, 0.1);
+}
+
+.tableau .card.face-up:not(:hover) {
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                z-index 0s linear 0.3s;
+}
+
+.tableau .card.face-up:hover ~ .card.face-up {
+    transform: translateY(10px);
+    transition-delay: 0.05s;
+}
+
+.tableau .card.face-down {
+    transform-origin: top center;
+}
+
+.tableau .card.face-up:hover ~ .card.face-down {
+    transform: translateY(5px) scale(0.98);
+    opacity: 0.7;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition-delay: 0.1s;
+    filter: brightness(0.9) blur(1px);
+}
+
+.foundation .card,
+.deck .card,
+.waste .card {
+    margin-top: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card.dragging {
+    opacity: 0.9;
+    cursor: grabbing;
+    transform: scale(1.05) rotate(2deg);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2),
+                0 16px 32px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
+    z-index: 1000;
+}
+
+.card-stack.valid-drop-target {
+    border-color: rgba(46, 204, 113, 0.6);
+    background: rgba(46, 204, 113, 0.1);
+    box-shadow: 
+        0 0 15px rgba(46, 204, 113, 0.2),
+        inset 0 0 20px rgba(46, 204, 113, 0.1);
+    animation: pulse 1.5s infinite;
+    transform: translateZ(10px);
+}
+
+.card-stack.valid-drop-target::after {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    right: -5px;
+    bottom: -5px;
+    border-radius: 10px;
+    border: 2px solid rgba(46, 204, 113, 0.3);
+    animation: expand 1.5s infinite;
+    pointer-events: none;
+}
+
+@keyframes expand {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1.1);
+        opacity: 1;
+    }
+}
+
+.card-stack.invalid-drop-target {
+    border-color: rgba(231, 76, 60, 0.6);
+    background: rgba(231, 76, 60, 0.1);
+    box-shadow: 
+        0 0 15px rgba(231, 76, 60, 0.2),
+        inset 0 0 20px rgba(231, 76, 60, 0.1);
+    animation: shake 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+@keyframes shake {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    25% {
+        transform: translateX(-5px);
+    }
+    75% {
+        transform: translateX(5px);
+    }
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.02);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
