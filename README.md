@@ -39,4 +39,4 @@ Simply open `index.html` in a modern web browser to play the game.
 This project was created entirely through collaboration with Cascade, Windsurf's AI coding assistant. It stands as a testament to the capabilities of modern AI-assisted development tools and serves as my personal milestone in exploring this new paradigm of coding.
 
 ---
-*Both this game as well as this readme was created strictly prompting Cascade, Windsurf's AI coding assistant.Created using Windsurf - The World's First Agentic IDE*
+*Both this game as well as this readme was created strictly prompting Cascade, Windsurf's AI coding assistant.Not a single line of code was written by me Created using Windsurf - The World's First Agentic IDE*
